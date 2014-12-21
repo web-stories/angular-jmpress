@@ -14,7 +14,7 @@
 					y: -1500
 				},
 				content: "" +
-					"<q>" +	
+					"<q>" +
 						"Aren't you just <b>bored</b> with all those slides-based presentations?" +
 					"</q>"
 			}, {

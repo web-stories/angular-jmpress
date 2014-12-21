@@ -1,21 +1,23 @@
 module.exports = function( grunt ) {
 	"use strict";
 
-	var validateFiles = [
+	var srcFiles = [
 		"Gruntfile.js",
-		"src/main/**/*.js"
+		"src/**/*.js",
+		"!src/partials/intro.js",
+		"!src/partials/outro.js"
 	];
 
 	var configs = {
 		pkg: grunt.file.readJSON( "bower.json" ),
 		jscs: {
-			files: validateFiles
+			files: srcFiles
 		},
 		jshint: {
 			options: {
 				"browser": true
 			},
-			files: validateFiles
+			files: srcFiles
 		},
 		concat: {
 			options: {
@@ -59,11 +61,8 @@ module.exports = function( grunt ) {
 				options: {
 					spawn: false
 				},
-				files: [
-					"src/main/**/*.js",
-					"src/partials/**/*.js"
-				],
-				tasks: [ "jscs", "concat" ]
+				files: srcFiles,
+				tasks: [ "validate", "concat" ]
 			}
 		}
 	};

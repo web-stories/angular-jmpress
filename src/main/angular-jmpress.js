@@ -30,21 +30,21 @@ function jmpressRoot( $timeout, jmpress ) {
 		},
 		link: function( scope, element ) {
 			scope.$watch( "steps", function( steps ) {
-				var stepElement;
 				var index = 0;
 				var stepElements = element.find( ".step" );
 
-				for ( ; index < stepElements.length; index += 1 ) {
-					stepElement = stepElements.eq( index );
-					if ( steps[ index ].id ) {
-						stepElement.attr( "id", steps[ index ].id );
+				stepElements.each(function( index, stepElement ) {
+					var step = steps[ index ];
+					stepElement = $( stepElement );
+					if ( step.id ) {
+						stepElement.attr( "id", step.id );
 					}
-					if ( steps[ index ].data ) {
-						angular.forEach( steps[ index ].data, function( value, key ) {
+					if ( step.data ) {
+						$.each( steps[ index ].data, function( key, value ) {
 							stepElement.attr( "data-" + camelCase( key ), value + "" );
 						});
 					}
-				}
+				});
 
 				if ( !element.jmpress( "initialized" ) ) {
 					element.jmpress();
