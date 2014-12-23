@@ -59,10 +59,9 @@ module.exports = function( grunt ) {
 		},
 		watch: {
 			dev: {
-				options: {
-					spawn: false
-				},
-				files: srcFiles,
+				files: srcFiles.concat([
+					"src/partials/**/*.js"
+				]),
 				tasks: [ "validate", "concat" ]
 			}
 		}
