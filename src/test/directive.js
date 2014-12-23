@@ -26,7 +26,7 @@
 			}];
 		});
 		var steps = root.find( ".step" );
-		
+
 		strictEqual( steps.eq( 0 ).hasClass( "active" ), false, "Do not activate the first step" );
 		strictEqual( steps.eq( 1 ).hasClass( "active" ), true, "Activate the second step" );
 	});

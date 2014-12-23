@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>RequireJS</title>
+    <link rel="stylesheet" href="../../lib/qunit/qunit.css">
+    <script src="../../lib/qunit/qunit.js"></script>
+
+    <script>
+      var require = {
+        baseUrl: "/dist",
+        paths: {
+          jquery: "/lib/jquery/jquery",
+          angular: "/lib/angular/angular"
+        },
+        shim: {
+          "angular": {
+            deps: [ "jquery" ],
+            exports: "angular"
+          }
+        }
+      };
+    </script>
+    <script src="../../lib/requirejs/require.js"></script>
+
+    <script src="requirejs.js"></script>
+  </head>
+  <body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+  </body>
+</html>
