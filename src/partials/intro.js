@@ -21,3 +21,5 @@ if ( !$ ) {
 if ( !angular ) {
 	throw new Error( "angular-jmpress requires angular" );
 }
+
+var jQuery = $;

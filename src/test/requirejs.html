@@ -18,15 +18,39 @@
             deps: [ "jquery" ],
             exports: "angular"
           }
+        },
+        map: {
+          "*": {
+            jquery: "jquery-private"
+          },
+          "jquery-private": {
+            jquery: "jquery"
+          }
         }
       };
     </script>
     <script src="../../lib/requirejs/require.js"></script>
+    <script>
+      define( "jquery-private", [ "jquery" ], function( $ ) {
+        return $.noConflict( true );
+      });
+    </script>
 
     <script src="requirejs.js"></script>
   </head>
   <body>
     <div id="qunit"></div>
-    <div id="qunit-fixture"></div>
+    <div id="qunit-fixture">
+      <div id="require-init">
+        <div data-ng-controller="Controller">
+          <div data-jmpress-root
+               data-jmpress-steps="steps">
+            <div class="step" data-ng-repeat="step in steps">
+              Step {{ step.number }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

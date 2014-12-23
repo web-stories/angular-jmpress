@@ -29,6 +29,9 @@ function jmpressRoot( $timeout, jmpress ) {
 			steps: "=jmpressSteps"
 		},
 		link: function( scope, element ) {
+			// We can't make sure angular picks jquery when using shim (see requireJS test)
+			element = $( element );
+
 			scope.$watch( "steps", function( steps ) {
 				var index = 0;
 				var stepElements = element.find( ".step" );
