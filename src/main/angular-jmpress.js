@@ -33,6 +33,10 @@ function jmpressRoot( $timeout, jmpress ) {
 			element = $( element );
 
 			scope.$watch( "steps", function( steps ) {
+				if ( !steps ) {
+					return;
+				}
+
 				var index = 0;
 				var stepElements = element.find( ".step" );
 
