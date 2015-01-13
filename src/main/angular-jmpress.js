@@ -26,11 +26,22 @@ function jmpressRoot( $timeout, jmpress ) {
 	return {
 		restrict: "A",
 		scope: {
+			settings: "=jmpressSettings",
 			steps: "=jmpressSteps"
 		},
 		link: function( scope, element ) {
 			// We can't make sure angular picks jquery when using shim (see requireJS test)
 			element = $( element );
+
+			scope.$watch( "settings", function( settings ) {
+				if ( !settings ) {
+					return;
+				}
+
+				checkInitialization(function() {
+					$.extend( element.jmpress( "settings" ), settings );
+				});
+			});
 
 			scope.$watch( "steps", function( steps ) {
 				if ( !steps ) {
@@ -53,8 +64,7 @@ function jmpressRoot( $timeout, jmpress ) {
 					}
 				});
 
-				if ( !element.jmpress( "initialized" ) ) {
-					element.jmpress();
+				checkInitialization(function() {
 					element.jmpress( "setActive", function( step, eventData ) {
 						$timeout(function() {
 							scope.steps[ step.index() ].active = true;
@@ -65,13 +75,20 @@ function jmpressRoot( $timeout, jmpress ) {
 							delete scope.steps[ step.index() ].active;
 						});
 					});
-				}
+				});
 
 				var active = jmpress.getActiveReference( steps );
 				if ( active ) {
 					element.jmpress( "goTo", stepElements.eq( active.index ) );
 				}
 			});
+
+			function checkInitialization( callback ) {
+				if ( !element.jmpress( "initialized" ) ) {
+					element.jmpress();
+					callback();
+				}
+			}
 		}
 	};
 }

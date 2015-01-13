@@ -79,6 +79,23 @@
 		}, 0 );
 	});
 
+	test( "Passing jmpress settings", function() {
+		expect( 1 );
+		setup( "settings", function( $scope ) {
+			$scope.settings = {
+				activeClass: "activated"
+			};
+			$scope.steps = [{
+				number: 1
+			}, {
+				number: 2,
+				active: true
+			}];
+		});
+
+		ok( $( "#settings-number-2" ).hasClass( "activated" ), "Second step should start active" );
+	});
+
 	function setup( id, controller ) {
 		var target = $( "#" + id );
 		angular.module( "test", [ "jmpress" ] )

@@ -48,6 +48,16 @@
           </div>
         </div>
       </div>
+      <div id="settings" data-ng-controller="Controller">
+        <div data-jmpress-root
+             data-jmpress-steps="steps"
+             data-jmpress-settings="settings">
+          <div class="step" data-ng-repeat="step in steps"
+               data-ng-attr-id="settings-number-{{ step.number }}">
+            Step {{ step.number }}
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
