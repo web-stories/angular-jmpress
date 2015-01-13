@@ -77,6 +77,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( "validate", [ "jscs", "jshint" ] );
 
 	// Special tasks
+	grunt.registerTask( "ci", [ "validate", "bower", "concat", "test" ] );
 	grunt.registerTask( "default", [ "bower", "concat" ] );
 	grunt.registerTask( "dev", [ "connect:dev", "watch:dev" ] );
 	grunt.registerTask( "release", [ "bower" ] );

@@ -7,6 +7,9 @@
     "url": "https://github.com/web-stories/angular-jmpress.git"
   },
   "author": "Fagner Brack (https://github.com/FagnerMartinsBrack)",
+  "scripts": {
+    "test": "grunt ci --verbose --debug --stack"
+  },
   "devDependencies": {
     "bower": "1.3.x",
     "grunt": "0.4.x",
