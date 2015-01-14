@@ -6,6 +6,6 @@
   	"requirejs": "2.1.x",
   	"qunit": "1.16.x",
   	"angular": "1.3.x",
-    "jmpress": "0.4.x"
+    "jquery": "2.1.x"
   }
 }

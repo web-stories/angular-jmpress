@@ -27,7 +27,7 @@ module.exports = function( grunt ) {
 			angular: {
 				files: {
 					"dist/<%= pkg.name %>.js": [
-						"lib/jmpress/jmpress.js",
+						"vendor/jmpress.webstories.js",
 						"src/main/angular-jmpress.js"
 					]
 				}
