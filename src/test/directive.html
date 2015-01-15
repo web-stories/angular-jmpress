@@ -58,6 +58,17 @@
           </div>
         </div>
       </div>
+      <div id="method-call" data-ng-controller="Controller">
+        <div data-jmpress-root
+             data-jmpress-init="init()"
+             data-jmpress-steps="steps">
+          <div class="step" data-ng-repeat="step in steps"
+               data-ng-attr-id="settings-number-{{ step.number }}">
+            Step {{ step.number }}
+          </div>
+          <button id="method-call-trigger" ng-click="next()"></button>
+        </div>
+      </div>
     </div>
   </body>
 </html>

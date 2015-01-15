@@ -5,27 +5,53 @@ function camelCase( str ) {
 	return str.charAt( 0 ) == "-" ? str.substr( 1 ) : str;
 }
 
-function jmpress() {
-	this.getActiveReference = function( steps ) {
-		var result;
-		var index = 0;
-		for ( ; index < steps.length; index += 1 ) {
-			if ( steps[ index ].active ) {
-				result = {
-					step: steps[ index ],
-					index: index
-				};
-				break;
+function jmpress( $timeout ) {
+	var element, methodName;
+	var instance = this;
+	var publicMethods = {
+		getActiveReference: function( steps ) {
+			var result;
+			var index = 0;
+			for ( ; index < steps.length; index += 1 ) {
+				if ( steps[ index ].active ) {
+					result = {
+						step: steps[ index ],
+						index: index
+					};
+					break;
+				}
 			}
+			return result;
+		},
+		method: function() {
+			var args = [].slice.call( arguments );
+			element.jmpress.apply( element, args );
 		}
-		return result;
 	};
+
+	this.init = function( elementToInitialize ) {
+		elementToInitialize.jmpress();
+		element = elementToInitialize;
+	};
+
+	for ( methodName in publicMethods ) {
+		instance[ methodName ] = (function( methodName ) {
+			return function() {
+				var args = [].slice.call( arguments );
+				if ( !element ) {
+					console.error( "jmpress not initialized when calling '" + methodName + "'" );
+				}
+				return publicMethods[ methodName ].apply( instance, args );
+			};
+		}( methodName ));
+	}
 }
 
 function jmpressRoot( $timeout, jmpress ) {
 	return {
 		restrict: "A",
 		scope: {
+			init: "&jmpressInit",
 			settings: "=jmpressSettings",
 			steps: "=jmpressSteps"
 		},
@@ -85,7 +111,14 @@ function jmpressRoot( $timeout, jmpress ) {
 
 			function checkInitialization( callback ) {
 				if ( !element.jmpress( "initialized" ) ) {
-					element.jmpress();
+
+					// Initialize jmpress in the element
+					jmpress.init( element );
+
+					// Triggers the init callback in the angular context
+					scope.init();
+
+					// Execute the desired process
 					callback();
 				}
 			}
@@ -95,4 +128,4 @@ function jmpressRoot( $timeout, jmpress ) {
 
 angular.module( "jmpress", [] )
 	.directive( "jmpressRoot", [ "$timeout", "jmpress", jmpressRoot ] )
-	.service( "jmpress", jmpress );
+	.service( "jmpress", [ "$timeout", jmpress ] );

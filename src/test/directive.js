@@ -96,6 +96,35 @@
 		ok( $( "#settings-number-2" ).hasClass( "activated" ), "Second step should start active" );
 	});
 
+	test( "Calling jmpress methods", function() {
+		expect( 1 );
+		var count = 0;
+		var root = setup( "method-call", function( $scope, jmpress ) {
+			$scope.steps = [{
+				number: 1,
+				active: true
+			}, {
+				number: 2
+			}];
+			$scope.init = function() {
+				jmpress.method( "beforeChange", function( element, eventData ) {
+					// We want to catch the "next" beforeChange trigger only
+					if ( eventData.reason === "next" ) {
+						count += 1;
+					}
+				});
+				$scope.next = function() {
+					jmpress.method( "next" );
+				};
+			};
+		});
+		var steps = root.find( ".step" );
+
+		$( "#method-call-trigger" ).trigger( "click" );
+
+		strictEqual( count, 1, "Should trigger the 'next' beforeChange event once" );
+	});
+
 	function setup( id, controller ) {
 		var target = $( "#" + id );
 		angular.module( "test", [ "jmpress" ] )

@@ -15,7 +15,8 @@ module.exports = function( grunt ) {
 		},
 		jshint: {
 			options: {
-				"browser": true
+				"browser": true,
+				"loopfunc": true
 			},
 			files: srcFiles
 		},
