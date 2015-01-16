@@ -27,9 +27,20 @@ module.exports = function( grunt ) {
 			},
 			angular: {
 				files: {
-					"dist/<%= pkg.name %>.js": [
-						"vendor/jmpress.webstories.js",
-						"src/main/angular-jmpress.js"
+					"dist/<%= pkg.name %>.js": "src/main/angular-jmpress.js"
+				}
+			},
+			jmpress: {
+				files: {
+					"dist/jquery.jmpress.js": [
+						"lib/jmpress/core.js",
+						"lib/jmpress/near.js",
+						"lib/jmpress/transform.js",
+						"lib/jmpress/active.js",
+						"lib/jmpress/circular.js",
+						"lib/jmpress/start.js",
+						"lib/jmpress/hash.js",
+						"lib/jmpress/mobile.js"
 					]
 				}
 			}
