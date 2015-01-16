@@ -21,18 +21,18 @@ module.exports = function( grunt ) {
 			files: srcFiles
 		},
 		concat: {
-			options: {
-				banner: grunt.file.read( "src/partials/intro.js" ),
-				footer: grunt.file.read( "src/partials/outro.js" )
-			},
 			angular: {
+				options: {
+					banner: grunt.file.read( "src/partials/intro.js" ),
+					footer: grunt.file.read( "src/partials/outro.js" )
+				},
 				files: {
 					"dist/<%= pkg.name %>.js": "src/main/angular-jmpress.js"
 				}
 			},
-			jmpress: {
+			jmpressDEFAULT: {
 				files: {
-					"dist/jquery.jmpress.js": [
+					"dist/jquery.jmpress.default.js": [
 						"lib/jmpress/core.js",
 						"lib/jmpress/near.js",
 						"lib/jmpress/transform.js",
@@ -42,6 +42,11 @@ module.exports = function( grunt ) {
 						"lib/jmpress/hash.js",
 						"lib/jmpress/mobile.js"
 					]
+				}
+			},
+			jmpressAMD: {
+				files: {
+					"dist/jquery.jmpress.js": "src/main/jquery.jmpress.js"
 				}
 			}
 		},
