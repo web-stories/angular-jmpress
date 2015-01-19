@@ -69,13 +69,13 @@
 		strictEqual( console.error.called, false, "Should not call console.error" );
 
 		var steps = root.find( ".step" );
-		strictEqual( steps.length, 0, "Should not create any steps aynchrounously" );
+		strictEqual( steps.length, 0, "Should not create any steps aynchronously" );
 
 		stop();
 		setTimeout(function() {
 			start();
 			var steps = root.find( ".step" );
-			strictEqual( steps.length, 0, "Should create the steps asynchronously" );
+			strictEqual( steps.length, 2, "Should create the steps asynchronously" );
 		}, 0 );
 	});
 
