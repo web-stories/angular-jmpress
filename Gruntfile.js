@@ -40,6 +40,7 @@ module.exports = function( grunt ) {
 						"lib/jmpress/circular.js",
 						"lib/jmpress/start.js",
 						"lib/jmpress/hash.js",
+						"lib/jmpress/keyboard.js",
 						"lib/jmpress/mobile.js"
 					]
 				}

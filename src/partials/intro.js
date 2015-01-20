@@ -7,14 +7,14 @@
  */
 (function( factory ) {
 	// There's no specific reason for the current dependency ordering.
-	// It just seems semantically correct to load "jquery" first, then the "jquery.jmpress" plugin,
-	// and then the "angular-jmpress" wrapper.
+	// It just seems semantically correct to load "lodash" and "jquery" first,
+	// then the "jquery.jmpress" plugin, and then the "angular-jmpress" wrapper.
 	if ( typeof define === "function" && define.amd ) {
-		define( [ "jquery", "jquery.jmpress", "angular" ], factory );
+		define( [ "lodash", "jquery", "jquery.jmpress", "angular" ], factory );
 	} else {
-		factory( window.jQuery, undefined, window.angular );
+		factory( window._, window.jQuery, undefined, window.angular );
 	}
-}(function( $, undefined, angular ) {
+}(function( _, $, undefined, angular ) {
 	"use strict";
 
 if ( !$ ) {
@@ -23,6 +23,10 @@ if ( !$ ) {
 
 if ( !angular ) {
 	throw new Error( "angular-jmpress requires angular" );
+}
+
+if ( !_ ) {
+	throw new Error( "angular-jmpress requires lodash" );
 }
 
 var jQuery = $;

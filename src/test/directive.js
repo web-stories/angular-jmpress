@@ -9,7 +9,7 @@
 	});
 
 	test( "Initialization", function() {
-		expect( 3 );
+		expect( 4 );
 		var root = setup( "initialization", function( $scope ) {
 			$scope.steps = [{
 				number: 1
@@ -19,6 +19,10 @@
 		});
 		var steps = root.find( ".step" );
 
+		ok(
+			steps.parent().parent().is( "[data-jmpress-root]" ),
+			"Ensure the steps are created inside the canvas element (2 levels below container)"
+		);
 		strictEqual( steps.length, 2, "Should create a two steps" );
 		strictEqual( steps.eq( 0 ).hasClass( "active" ), true, "Activate the first step" );
 		strictEqual( steps.eq( 1 ).hasClass( "active" ), false, "Do not activate the second step" );
