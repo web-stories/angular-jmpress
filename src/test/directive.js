@@ -124,7 +124,7 @@
 		});
 		var steps = root.find( ".step" );
 
-		$( "#method-call-trigger" ).trigger( "click" );
+		root.find( ".method-call-trigger" ).trigger( "click" );
 
 		strictEqual( count, 1, "Should trigger the 'next' beforeChange event once" );
 	});

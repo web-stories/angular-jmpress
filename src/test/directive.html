@@ -19,7 +19,7 @@
   <body>
     <div id="qunit"></div>
     <div id="qunit-fixture">
-      <div id="initialization" ng-controller="Controller">
+      <div id="initialization" data-ng-controller="Controller">
         <div data-jmpress-root
              data-jmpress-steps="steps">
           <div class="step" data-ng-repeat="step in steps">
@@ -69,8 +69,8 @@
                data-ng-attr-id="settings-number-{{ step.number }}">
             Step {{ step.number }}
           </div>
-          <button id="method-call-trigger" ng-click="next()"></button>
         </div>
+        <button class="method-call-trigger" data-ng-click="next()"></button>
       </div>
       <div id="watch-changes-array" data-ng-controller="Controller">
         <div data-jmpress-root
