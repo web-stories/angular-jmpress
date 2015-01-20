@@ -84,7 +84,7 @@ function jmpressRoot( $timeout, jmpress ) {
 					$.extend( element.jmpress( "settings" ), settings );
 				});
 
-				scope.$watch( "steps", function( steps, previousSteps ) {
+				scope.$watchCollection( "steps", function( steps, previousSteps ) {
 					var addedSteps;
 					var firstRun = steps === previousSteps;
 

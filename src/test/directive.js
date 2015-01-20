@@ -129,6 +129,20 @@
 		strictEqual( count, 1, "Should trigger the 'next' beforeChange event once" );
 	});
 
+	test( "Watch changes in the steps array instance", function() {
+		var root = setup( "watch-changes-array", function( $scope ) {
+			$scope.steps = [];
+			$scope.addStep = function() {
+				Array.prototype.push.apply( $scope.steps, [{
+					number: 1
+				}]);
+			};
+		});
+		root.find( ".add-step-trigger" ).trigger( "click" );
+		var steps = root.find( ".step" );
+		strictEqual( steps.length, 1, "Should add steps if array is modified" );
+	});
+
 	function setup( id, controller ) {
 		var target = $( "#" + id );
 		angular.module( "test", [ "jmpress" ] )

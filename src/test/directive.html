@@ -72,6 +72,15 @@
           <button id="method-call-trigger" ng-click="next()"></button>
         </div>
       </div>
+      <div id="watch-changes-array" data-ng-controller="Controller">
+        <div data-jmpress-root
+             data-jmpress-steps="steps">
+          <div class="step" data-ng-repeat="step in steps">
+            Step {{ step.number }}
+          </div>
+        </div>
+        <button class="add-step-trigger" data-ng-click="addStep()"></button>
+      </div>
     </div>
   </body>
 </html>
