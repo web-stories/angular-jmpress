@@ -29,9 +29,8 @@ function jmpress( $timeout ) {
 		}
 	};
 
-	this.init = function( elementToInitialize ) {
-		elementToInitialize.jmpress();
-		element = elementToInitialize;
+	this.init = function( initializedElement ) {
+		element = initializedElement;
 	};
 
 	for ( methodName in publicMethods ) {
@@ -47,99 +46,87 @@ function jmpress( $timeout ) {
 	}
 }
 
-function jmpressRoot( $timeout, jmpress ) {
+function jmpressRoot( $timeout, $compile, jmpress ) {
 	return {
 		restrict: "A",
+		transclude: true,
 		scope: {
 			init: "&jmpressInit",
-			settings: "=jmpressSettings",
 			steps: "=jmpressSteps"
 		},
-		compile: function( element ) {
-			var HTMLContents = element[ 0 ].innerHTML;
+		controller: function( $scope, $element ) {
+			this.getStep = function( index ) {
+				return $scope.steps[ index ];
+			};
+			this.getRootElement = function() {
+				return $element;
+			};
+		},
+		link: function( scope, element, attrs, controller, linker ) {
 
 			// We can't make sure angular picks jquery when using shim (see requireJS test)
 			element = $( element );
 
-			// Clear the element, the content will be appended back later
-			element.empty();
+			scope.$watchCollection( "steps", function( steps, previousSteps ) {
+				if ( !steps ) {
+					return;
+				}
 
-			// Initialize jmpress in the element before link phase to be able to position the
-			// HTML contents
-			jmpress.init( element );
-
-			// Copy back the HTML contents inside the jmpress canvas, so steps are created in
-			// the correct place by angular
-			element
-				.jmpress( "canvas" )
-				.append( HTMLContents );
-
-			return function( scope ) {
-
-				scope.$watch( "settings", function( settings ) {
-					if ( !settings ) {
-						return;
-					}
-
-					$.extend( element.jmpress( "settings" ), settings );
-				});
-
-				scope.$watchCollection( "steps", function( steps, previousSteps ) {
-					var addedSteps;
-					var firstRun = steps === previousSteps;
-
-					if ( !steps ) {
-						return;
-					}
-
-					if ( firstRun ) {
-						addedSteps = steps;
-						scope.init();
-					} else {
-						addedSteps = _.difference( steps, previousSteps );
-					}
-
-					var index = 0;
-					var stepElements = element.find( ".step" );
-
-					steps.forEach(function( currentStep, currentIndex ) {
-						// If this object is not recently added, then skip immediately
-						if ( !_.contains( addedSteps, currentStep ) ) {
-							return;
-						}
-						var stepElement = stepElements.eq( currentIndex );
-						if ( currentStep.id ) {
-							stepElement.attr(  "id", currentStep.id );
-						}
-						if ( currentStep.data ) {
-							$.each( currentStep.data, function( key, value ) {
-								stepElement.attr( "data-" + camelCase( key ), value + "" );
-							});
-						}
-						element.jmpress( "init", stepElement );
+				if ( !element.jmpress( "initialized" ) ) {
+					$.jmpress( "beforeInit", function() {
+						linker( scope, function( clone ) {
+							var canvas = element.jmpress( "canvas" );
+							var compiledContent = $compile( clone )( scope );
+							canvas.append( compiledContent );
+						});
 					});
 
-					var active = jmpress.getActiveReference( steps );
-					var elementToActivate = stepElements.eq( active ? active.index : 0 );
-					element.jmpress( "goTo", elementToActivate );
-				});
+					element.jmpress();
+					jmpress.init( element );
 
-				element.jmpress( "setActive", function( step, eventData ) {
-					$timeout(function() {
+					element.jmpress( "setActive", function( step, eventData ) {
 						scope.steps[ step.index() ].active = true;
 					});
-				});
 
-				element.jmpress( "setInactive", function( step, eventData ) {
-					$timeout(function() {
+					element.jmpress( "setInactive", function( step, eventData ) {
 						delete scope.steps[ step.index() ].active;
 					});
+
+					scope.init();
+				}
+			});
+		}
+	};
+}
+
+function jmpressStep( jmpress ) {
+	return {
+		restrict: "A",
+		require: "^^jmpressRoot",
+		link: function( scope, stepElement, attrs, rootController ) {
+			var currentStep = rootController.getStep( scope.$index );
+			var rootElement = rootController.getRootElement();
+
+			if ( currentStep.id ) {
+				stepElement.attr(  "id", currentStep.id );
+			}
+
+			if ( currentStep.data ) {
+				$.each( currentStep.data, function( key, value ) {
+					stepElement.attr( "data-" + camelCase( key ), value + "" );
 				});
-			};
+			}
+
+			rootElement.jmpress( "init", stepElement );
+
+			if ( currentStep.active ) {
+				rootElement.jmpress( "goTo", stepElement );
+			}
 		}
 	};
 }
 
 angular.module( "jmpress", [] )
-	.directive( "jmpressRoot", [ "$timeout", "jmpress", jmpressRoot ] )
+	.directive( "jmpressRoot", [ "$timeout", "$compile", "jmpress", jmpressRoot ] )
+	.directive( "jmpressStep", [ "jmpress", jmpressStep ] )
 	.service( "jmpress", [ "$timeout", jmpress ] );

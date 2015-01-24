@@ -1,4 +1,9 @@
 (function() {
+
+	QUnit.testStart(function() {
+		window.location.hash = "#";
+	});
+
 	module( "Basic usage", {
 		setup: function() {
 			sinon.spy( console, "error" );
@@ -12,7 +17,8 @@
 		expect( 4 );
 		var root = setup( "initialization", function( $scope ) {
 			$scope.steps = [{
-				number: 1
+				number: 1,
+				active: true
 			}, {
 				number: 2
 			}];
@@ -25,7 +31,7 @@
 		);
 		strictEqual( steps.length, 2, "Should create a two steps" );
 		strictEqual( steps.eq( 0 ).hasClass( "active" ), true, "Activate the first step" );
-		strictEqual( steps.eq( 1 ).hasClass( "active" ), false, "Do not activate the second step" );
+	strictEqual( steps.eq( 1 ).hasClass( "active" ), false, "Do not activate the second step" );
 	});
 
 	test( "Initialize with a different step activated", function() {
@@ -83,23 +89,6 @@
 		}, 0 );
 	});
 
-	test( "Passing jmpress settings", function() {
-		expect( 1 );
-		setup( "settings", function( $scope ) {
-			$scope.settings = {
-				activeClass: "activated"
-			};
-			$scope.steps = [{
-				number: 1
-			}, {
-				number: 2,
-				active: true
-			}];
-		});
-
-		ok( $( "#settings-number-2" ).hasClass( "activated" ), "Second step should start active" );
-	});
-
 	test( "Calling jmpress methods", function() {
 		expect( 1 );
 		var count = 0;
@@ -122,10 +111,8 @@
 				};
 			};
 		});
-		var steps = root.find( ".step" );
 
 		root.find( ".method-call-trigger" ).trigger( "click" );
-
 		strictEqual( count, 1, "Should trigger the 'next' beforeChange event once" );
 	});
 

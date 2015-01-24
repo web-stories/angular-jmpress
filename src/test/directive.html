@@ -22,7 +22,7 @@
       <div id="initialization" data-ng-controller="Controller">
         <div data-jmpress-root
              data-jmpress-steps="steps">
-          <div class="step" data-ng-repeat="step in steps">
+          <div class="step" data-ng-repeat="step in steps" data-jmpress-step>
             Step {{ step.number }}
           </div>
         </div>
@@ -30,7 +30,7 @@
       <div id="active-step" data-ng-controller="Controller">
         <div data-jmpress-root
              data-jmpress-steps="steps">
-          <div class="step" data-ng-repeat="step in steps">
+          <div class="step" data-ng-repeat="step in steps" data-jmpress-step>
             Step {{ step.number }}
           </div>
         </div>
@@ -38,7 +38,7 @@
       <div id="data-attributes" data-ng-controller="Controller">
         <div data-jmpress-root
              data-jmpress-steps="steps">
-          <div class="step" data-ng-repeat="step in steps">
+          <div class="step" data-ng-repeat="step in steps" data-jmpress-step>
             Step {{ step.number }}
           </div>
         </div>
@@ -46,17 +46,7 @@
       <div id="steps-async" data-ng-controller="Controller">
         <div data-jmpress-root
              data-jmpress-steps="steps">
-          <div class="step" data-ng-repeat="step in steps">
-            Step {{ step.number }}
-          </div>
-        </div>
-      </div>
-      <div id="settings" data-ng-controller="Controller">
-        <div data-jmpress-root
-             data-jmpress-steps="steps"
-             data-jmpress-settings="settings">
-          <div class="step" data-ng-repeat="step in steps"
-               data-ng-attr-id="settings-number-{{ step.number }}">
+          <div class="step" data-ng-repeat="step in steps" data-jmpress-step>
             Step {{ step.number }}
           </div>
         </div>
@@ -65,8 +55,7 @@
         <div data-jmpress-root
              data-jmpress-init="init()"
              data-jmpress-steps="steps">
-          <div class="step" data-ng-repeat="step in steps"
-               data-ng-attr-id="settings-number-{{ step.number }}">
+          <div class="step" data-ng-repeat="step in steps" data-jmpress-step>
             Step {{ step.number }}
           </div>
         </div>
@@ -75,7 +64,7 @@
       <div id="watch-changes-array" data-ng-controller="Controller">
         <div data-jmpress-root
              data-jmpress-steps="steps">
-          <div class="step" data-ng-repeat="step in steps">
+          <div class="step" data-ng-repeat="step in steps" data-jmpress-step>
             Step {{ step.number }}
           </div>
         </div>
