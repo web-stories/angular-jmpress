@@ -7,14 +7,15 @@ An angular module adapter for jmpress
 [![Build status](https://ci.appveyor.com/api/projects/status/uvnv7ugeempbottw?svg=true)](https://ci.appveyor.com/project/FagnerMartinsBrack/angular-jmpress)
 [![devDependency Status](https://david-dm.org/web-stories/angular-jmpress/dev-status.svg)](https://david-dm.org/web-stories/angular-jmpress#info=devDependencies)
 
-**DISCLAIMER:**
-
+**DISCLAIMER:**  
 This project is a **WORK IN PROGRESS**, and currently supports only some basic features of jmpress. Feel free to open a pull request and implement additional features.
 
 ## Get started
 
 1. jmpress is a jquery plugin, so first you need to include the latest [jquery](jquery.com) version in your page.
+
 2. Also download and include the latest [angular](https://angularjs.org/) version.
+
 3. jmpress does a lot of things angular can do out of the box, so not all modules are necessary, but a custom build of jmpress with the following modules are required:
 
     * `core.js` - Necessary to expose plugin facility
