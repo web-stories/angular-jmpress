@@ -1,9 +1,5 @@
 (function() {
 
-	QUnit.testStart(function() {
-		window.location.hash = "#";
-	});
-
 	module( "Basic usage", {
 		setup: function() {
 			sinon.spy( console, "error" );
@@ -128,6 +124,25 @@
 		root.find( ".add-step-trigger" ).trigger( "click" );
 		var steps = root.find( ".step" );
 		strictEqual( steps.length, 1, "Should add steps if array is modified" );
+	});
+
+	test( "Activate the initial step from hashbang", function() {
+		window.location.hash = "#step-number-2";
+		var root = setup( "initial-step-hash", function( $scope ) {
+			$scope.steps = [{
+				id: "step-number-1",
+				number: 1
+			}, {
+				id: "step-number-2",
+				number: 2
+			}];
+		});
+		stop();
+		setTimeout(function() {
+			start();
+			ok( $( "#step-number-2" ).hasClass( "active" ), "Should start in the second step" );
+			window.location.hash = "#";
+		}, 0 );
 	});
 
 	function setup( id, controller ) {

@@ -31,9 +31,10 @@
       <div data-jmpress-root
            data-jmpress-steps="steps">
         <div class="step"
-             ng-class="{ 'slide': step.type === 'slide' }"
+             data-ng-class="{ 'slide': step.type === 'slide' }"
              data-ng-repeat="step in steps"
-             data-ng-bind-html="step.content | htmlTrusted"></div>
+             data-ng-bind-html="step.content | htmlTrusted"
+             data-jmpress-step></div>
       </div>
       <div class="hint">
         <p>Use a spacebar or arrow keys to navigate</p>

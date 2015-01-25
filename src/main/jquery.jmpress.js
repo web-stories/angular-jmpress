@@ -4,7 +4,6 @@ define([
 	"../lib/jmpress/transform",
 	"../lib/jmpress/active",
 	"../lib/jmpress/circular",
-	"../lib/jmpress/start",
 	"../lib/jmpress/hash",
 	"../lib/jmpress/mobile"
 ]);

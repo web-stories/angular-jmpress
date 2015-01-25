@@ -5,7 +5,26 @@ function camelCase( str ) {
 	return str.charAt( 0 ) == "-" ? str.substr( 1 ) : str;
 }
 
-function jmpress( $timeout ) {
+function initialStep() {
+	this.fromHash = function( settings ) {
+		// Only get from hash if the module is available
+		if ( settings.hash && settings.hash.use ) {
+			return getElementFromUrl( settings );
+		}
+	};
+	this.fromStart = function( rootElement, settings ) {
+		return rootElement.find( settings.stepSelector );
+	};
+	function getElementFromUrl( settings ) {
+		var element = $( "#" + window.location.hash.replace( /^#\/?/, "" ) );
+		var stepSelector = settings.stepSelector;
+		if ( element.length > 0 && element.is( stepSelector ) ) {
+			return element;
+		}
+	}
+}
+
+function jmpress() {
 	var element, methodName;
 	var instance = this;
 	var publicMethods = {
@@ -25,7 +44,7 @@ function jmpress( $timeout ) {
 		},
 		method: function() {
 			var args = [].slice.call( arguments );
-			element.jmpress.apply( element, args );
+			return element.jmpress.apply( element, args );
 		}
 	};
 
@@ -46,7 +65,7 @@ function jmpress( $timeout ) {
 	}
 }
 
-function jmpressRoot( $timeout, $compile, jmpress ) {
+function jmpressRoot( $timeout, $compile, jmpress, initialStep ) {
 	return {
 		restrict: "A",
 		transclude: true,
@@ -54,25 +73,22 @@ function jmpressRoot( $timeout, $compile, jmpress ) {
 			init: "&jmpressInit",
 			steps: "=jmpressSteps"
 		},
-		controller: function( $scope, $element ) {
+		controller: [ "$scope", "$element", function( $scope, $element ) {
 			this.getStep = function( index ) {
 				return $scope.steps[ index ];
 			};
 			this.getRootElement = function() {
 				return $element;
 			};
-		},
-		link: function( scope, element, attrs, controller, linker ) {
+		}],
+		compile: function() {
+			return {
+				pre: function( scope, element, attrs, controller, linker ) {},
+				post: function( scope, element, attrs, controller, linker ) {
 
-			// We can't make sure angular picks jquery when using shim (see requireJS test)
-			element = $( element );
+					// We can't make sure angular picks jquery when using shim (see requireJS test)
+					element = $( element );
 
-			scope.$watchCollection( "steps", function( steps, previousSteps ) {
-				if ( !steps ) {
-					return;
-				}
-
-				if ( !element.jmpress( "initialized" ) ) {
 					$.jmpress( "beforeInit", function() {
 						linker( scope, function( clone ) {
 							var canvas = element.jmpress( "canvas" );
@@ -85,16 +101,41 @@ function jmpressRoot( $timeout, $compile, jmpress ) {
 					jmpress.init( element );
 
 					element.jmpress( "setActive", function( step, eventData ) {
-						scope.steps[ step.index() ].active = true;
+						var target = scope.steps[ step.index() ];
+						if ( target ) {
+							target.active = true;
+						}
 					});
 
 					element.jmpress( "setInactive", function( step, eventData ) {
-						delete scope.steps[ step.index() ].active;
+						var target = scope.steps[ step.index() ];
+						if ( target ) {
+							delete target.active;
+						}
 					});
 
 					scope.init();
+
+					scope.$watchCollection( "steps", function( steps, previousSteps ) {
+						if ( !steps ) {
+							return;
+						}
+
+						// SELECTING THE INITIAL STEP
+						// The initial step does not work when we add steps dynamically with
+						// angular.
+						// For now replicate some of the behavior here.
+						var settings, firstStep;
+						if ( jmpress.getActiveReference( steps ) === undefined ) {
+							settings = jmpress.method( "settings" );
+							firstStep =
+								initialStep.fromHash( settings ) ||
+								initialStep.fromStart( element, settings );
+							jmpress.method( "goTo", firstStep );
+						}
+					});
 				}
-			});
+			};
 		}
 	};
 }
@@ -127,6 +168,7 @@ function jmpressStep( jmpress ) {
 }
 
 angular.module( "jmpress", [] )
-	.directive( "jmpressRoot", [ "$timeout", "$compile", "jmpress", jmpressRoot ] )
+	.directive( "jmpressRoot", [ "$timeout", "$compile", "jmpress", "initialStep", jmpressRoot ] )
 	.directive( "jmpressStep", [ "jmpress", jmpressStep ] )
-	.service( "jmpress", [ "$timeout", jmpress ] );
+	.service( "jmpress", [ jmpress ] )
+	.service( "initialStep", [ initialStep ] );
