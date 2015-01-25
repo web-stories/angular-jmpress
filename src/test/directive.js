@@ -25,7 +25,7 @@
 			steps.parent().parent().is( "[data-jmpress-root]" ),
 			"Ensure the steps are created inside the canvas element (2 levels below container)"
 		);
-		strictEqual( steps.length, 2, "Should create a two steps" );
+		strictEqual( steps.length, 2, "Should create two steps" );
 		strictEqual( steps.eq( 0 ).hasClass( "active" ), true, "Activate the first step" );
 	strictEqual( steps.eq( 1 ).hasClass( "active" ), false, "Do not activate the second step" );
 	});
@@ -143,6 +143,18 @@
 			ok( $( "#step-number-2" ).hasClass( "active" ), "Should start in the second step" );
 			window.location.hash = "#";
 		}, 0 );
+	});
+
+	test( "Steps as children of a parent object", function() {
+		var root = setup( "steps-as-children", function( $scope ) {
+			$scope.presentation = {
+				slides: [{
+					number: 1
+				}]
+			};
+		});
+		var steps = root.find( ".step" );
+		strictEqual( steps.length, 1, "Should create one step" );
 	});
 
 	function setup( id, controller ) {
