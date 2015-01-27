@@ -25,7 +25,7 @@ This project is a **WORK IN PROGRESS**, and currently supports only some basic f
 
 It is necessary that you pick `circular.js`, which handles the default mechanism for selecting the slides using the default methods (next, prev, home, etc.), or you can roll your own using jmpress plugin facility.
 
-Also, it is necessary to specify the viewport width in case you don't use `viewport.js`, so jmpress is able to adjust itself to fit the screen accordingly:
+Also, it is necessary to specify the viewport width, so jmpress is able to adjust itself to fit the screen accordingly:
 
 ```javascript
 // A viewport config is necessary to enable auto resize of the content on window resize
