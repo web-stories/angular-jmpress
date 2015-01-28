@@ -7,11 +7,15 @@
     "qunit": "1.16.x",
     "angular": "1.3.x",
     "jquery": "2.1.x",
+    "jquery-simulate": "https://github.com/jquery/jquery-simulate.git#1.0.x",
     "jmpress": "https://github.com/web-stories/jmpress.js.git#master"
   },
   "exportsOverride": {
     "jmpress": {
       "/": [ "src/components/*.js", "src/plugins/*.js" ]
+    },
+    "jquery-simulate": {
+      "/": ["jquery.simulate.js"]
     }
   }
 }

@@ -8,6 +8,7 @@
     <script src="../../lib/sinon/index.js"></script>
 
     <script src="../../lib/jquery/jquery.js"></script>
+    <script src="../../lib/jquery-simulate/jquery.simulate.js"></script>
     <script src="../../lib/angular/angular.js"></script>
     <script src="../../dist/jquery.jmpress.default.js"></script>
 
@@ -80,6 +81,14 @@
       <div id="steps-as-children" data-ng-controller="Controller">
         <div data-jmpress-root
              data-jmpress-steps="presentation.slides">
+          <div class="step" data-ng-repeat="step in steps" data-jmpress-step>
+            Step {{ step.number }}
+          </div>
+        </div>
+      </div>
+      <div id="watch-keyboard" data-ng-controller="Controller">
+        <div data-jmpress-root
+             data-jmpress-steps="steps">
           <div class="step" data-ng-repeat="step in steps" data-jmpress-step>
             Step {{ step.number }}
           </div>

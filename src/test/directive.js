@@ -157,6 +157,35 @@
 		strictEqual( steps.length, 1, "Should create one step" );
 	});
 
+	test( "Trigger watched steps when keyboard is used", function() {
+		expect( 2 );
+		var stepsModel;
+		var watchTriggers = 0;
+		var root = setup( "watch-keyboard", function( $scope ) {
+			stepsModel = $scope.steps = [{
+				number: 1,
+				active: true
+			}, {
+				number: 2
+			}];
+			$scope.$watch( "steps", function() {
+				watchTriggers += 1;
+			}, true );
+		});
+
+		// Trigger keyboard ARROW_RIGHT to go to the next step
+		$( document ).simulate( "keydown", {
+			keyCode: 39
+		});
+
+		strictEqual( stepsModel[ 1 ].active, true, "Should change the active step in the model" );
+
+		// 1. First watch execution
+		// 2. setInactive for the first step
+		// 3. setActive for the second step
+		strictEqual( watchTriggers, 3, "Should execute the watched steps" );
+	});
+
 	function setup( id, controller ) {
 		var target = $( "#" + id );
 		angular.module( "test", [ "jmpress" ] )
