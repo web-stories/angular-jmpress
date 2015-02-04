@@ -143,6 +143,25 @@ jmpress.getActive( steps ); // { active: true }
 jmpress.findActive(); // { active: true }
 ```
 
+### getActive( steps, index ) / findActive( index )
+
+Retrieves the step relative to the current active step, or `undefined` if there's no active step or
+if the step is out of range.
+
+```javascript
+var steps = [{
+  number: 1
+}, {
+  number: 2,
+  active: true
+}, {
+  number: 3
+}];
+
+jmpress.getActive( steps, 1 ); // { number: 3 }
+jmpress.findActive( -1 ); // { number: 2 }
+```
+
 ## Manual release process
 
 1. Remove `-pre` suffix on `package.json` and `bower.json` version

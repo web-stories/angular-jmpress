@@ -37,30 +37,39 @@ function jmpress() {
 		return element.jmpress.apply( element, args );
 	};
 
-	this.findActive = function() {
-		return this.getActive( steps );
+	this.findActive = function( index ) {
+		return this.getActive( steps, index );
 	};
 
-	this.getActive = function( steps ) {
-		var activeRef = this.getActiveReference( steps );
+	this.getActive = function( steps, index ) {
+		var activeRef = this.getActiveReference( steps, index );
 		if ( activeRef ) {
 			return activeRef.step;
 		}
 	};
 
-	this.getActiveReference = function( steps ) {
-		var result;
-		var index = 0;
-		for ( ; index < steps.length; index += 1 ) {
-			if ( steps[ index ].active ) {
-				result = {
-					step: steps[ index ],
-					index: index
+	this.getActiveReference = function( steps, index ) {
+		var active;
+		steps.forEach(function( step, i ) {
+			if ( step.active ) {
+				active = {
+					step: step,
+					index: i
 				};
-				break;
 			}
+		});
+
+		var targetStep, targetIndex;
+		if ( active && index ) {
+			targetIndex = active.index + index;
+			targetStep = steps[ targetIndex ];
+			active = targetStep ? {
+				step: targetStep,
+				index: targetIndex
+			} : undefined;
 		}
-		return result;
+
+		return active;
 	};
 }
 
