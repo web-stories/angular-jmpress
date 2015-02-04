@@ -159,7 +159,7 @@ var steps = [{
 }];
 
 jmpress.getActive( steps, 1 ); // { number: 3 }
-jmpress.findActive( -1 ); // { number: 2 }
+jmpress.findActive( -1 ); // { number: 1 }
 ```
 
 ## Manual release process
