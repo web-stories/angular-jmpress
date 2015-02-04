@@ -1,6 +1,6 @@
 {
   "name": "angular-jmpress",
-  "version": "0.0.1",
+  "version": "0.0.2-pre",
   "description": "An angular module adapter for jmpress",
   "repository": {
     "type": "git",

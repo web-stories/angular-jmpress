@@ -92,3 +92,11 @@ angular.module( "myModule", [ "jmpress" ] )
 ```
 
 If you want to see thing working, check out the [demo](https://github.com/web-stories/angular-jmpress/tree/master/src/gh-pages/demo) and the [test files](https://github.com/web-stories/angular-jmpress/tree/master/src/test)
+
+## Manual release process
+
+1. Remove `-pre` suffix on `package.json` and `bower.json` version
+2. Commit "Create version x.x.x"
+3. Create tag
+4. Create github release
+5. Bump the version and add the `-pre` suffix on on `package.json` and `bower.json`
