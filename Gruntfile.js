@@ -64,6 +64,7 @@ module.exports = function( grunt ) {
 				options: {
 					urls: [
 						"http://localhost:8000/src/test/directive.html",
+						"http://localhost:8000/src/test/service.html",
 						"http://localhost:8000/src/test/requirejs.html"
 					]
 				}

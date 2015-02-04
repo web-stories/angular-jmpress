@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Services</title>
+    <link rel="stylesheet" href="../../lib/qunit/qunit.css">
+    <script src="../../lib/qunit/qunit.js"></script>
+
+    <script src="../../lib/jquery/jquery.js"></script>
+    <script src="../../lib/angular/angular.js"></script>
+    <script src="../../dist/jquery.jmpress.default.js"></script>
+
+    <script src="../../dist/angular-jmpress.js"></script>
+
+    <script src="service.js"></script>
+  </head>
+  <body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+      <div id="find-active" data-ng-controller="Controller">
+        <div data-jmpress-root
+             data-jmpress-steps="steps">
+          <div class="step" data-ng-repeat="step in steps" data-jmpress-step>
+            Step {{ step.number }}
+          </div>
+        </div>
+        <button class="execute" data-ng-click="execute()"></button>
+      </div>
+    </div>
+  </body>
+</html>

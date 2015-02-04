@@ -25,44 +25,43 @@ function initialStep() {
 }
 
 function jmpress() {
-	var element, methodName;
-	var instance = this;
-	var publicMethods = {
-		getActiveReference: function( steps ) {
-			var result;
-			var index = 0;
-			for ( ; index < steps.length; index += 1 ) {
-				if ( steps[ index ].active ) {
-					result = {
-						step: steps[ index ],
-						index: index
-					};
-					break;
-				}
-			}
-			return result;
-		},
-		method: function() {
-			var args = [].slice.call( arguments );
-			return element.jmpress.apply( element, args );
+	var element, steps;
+
+	this.init = function( initializedElement, scope ) {
+		element = initializedElement;
+		steps = scope.steps;
+	};
+
+	this.method = function() {
+		var args = [].slice.call( arguments );
+		return element.jmpress.apply( element, args );
+	};
+
+	this.findActive = function() {
+		return this.getActive( steps );
+	};
+
+	this.getActive = function( steps ) {
+		var activeRef = this.getActiveReference( steps );
+		if ( activeRef ) {
+			return activeRef.step;
 		}
 	};
 
-	this.init = function( initializedElement ) {
-		element = initializedElement;
+	this.getActiveReference = function( steps ) {
+		var result;
+		var index = 0;
+		for ( ; index < steps.length; index += 1 ) {
+			if ( steps[ index ].active ) {
+				result = {
+					step: steps[ index ],
+					index: index
+				};
+				break;
+			}
+		}
+		return result;
 	};
-
-	for ( methodName in publicMethods ) {
-		instance[ methodName ] = (function( methodName ) {
-			return function() {
-				var args = [].slice.call( arguments );
-				if ( !element ) {
-					console.error( "jmpress not initialized when calling '" + methodName + "'" );
-				}
-				return publicMethods[ methodName ].apply( instance, args );
-			};
-		}( methodName ));
-	}
 }
 
 function jmpressRoot( $compile, jmpress, initialStep ) {
@@ -95,7 +94,7 @@ function jmpressRoot( $compile, jmpress, initialStep ) {
 			});
 
 			element.jmpress();
-			jmpress.init( element );
+			jmpress.init( element, scope );
 
 			element.jmpress( "setActive", function( step, eventData ) {
 				safeApply( scope, function() {

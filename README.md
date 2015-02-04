@@ -93,6 +93,56 @@ angular.module( "myModule", [ "jmpress" ] )
 
 If you want to see thing working, check out the [demo](https://github.com/web-stories/angular-jmpress/tree/master/src/gh-pages/demo) and the [test files](https://github.com/web-stories/angular-jmpress/tree/master/src/test)
 
+## jmpress service
+
+angular-jmpress has a service called `jmpress`, which contains some utility methods to
+retrieve the presentation information.
+
+By default, all utility methods start either with "find" or "get".
+
+* If a method starts with "get", then you have to provide the steps array in the first argument.
+* If a method starts with "find", then you can omit the first argument, angular-jmpress will
+  lookup for the steps array in the current service instance.
+
+Example of "get" usage:
+
+```javascript
+angular.module( "myModule", [ "jmpress" ] )
+  .controller(function( $scope, jmpress ) {
+    $scope.steps = [{
+      active: true
+    }];
+    var active = jmpress.getActive( $scope.steps );
+  });
+```
+
+Example of "find" usage:
+
+```javascript
+angular.module( "myModule", [ "jmpress" ] )
+  .controller(function( $scope, jmpress ) {
+    $scope.steps = [{
+      active: true
+    }];
+    $scope.executedLater = function() {
+      var active = jmpress.findActive();
+    };
+  });
+```
+
+*Note that you should not call "find" methods in the same digest cycle used to create the steps
+ array, because angular-jmpress does not yet have the internal reference for the steps. Use them
+ only if you created the steps in a previous digest cycle.*
+
+### getActive( steps ) / findActive()
+
+Retrieves the current active step or `undefined` if there's no active step.
+
+```javascript
+jmpress.getActive( steps ); // { active: true }
+jmpress.findActive(); // { active: true }
+```
+
 ## Manual release process
 
 1. Remove `-pre` suffix on `package.json` and `bower.json` version
