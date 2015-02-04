@@ -163,6 +163,34 @@ jmpress.getActive( steps, 1 ); // { number: 3 }
 jmpress.findActive( -1 ); // { number: 1 }
 ```
 
+### activate( steps, callback( step ) ) / activate( callback( step ) )
+
+Changes the current activated step according to the condition of a given callback.
+
+The callback will be executed for each step in the steps array. If it returns `true`, it changes the
+activated step for the one in which the callback returned `true`.
+
+* If more than one condition returns `true`, the behavior is undefined.
+* If the "active" property of a step is manipulated inside a callback, the behavior is undefined.
+
+```javascript
+var steps = [{
+  number: 1
+}, {
+  number: 2
+}];
+
+// [{ number: 1, active: true }, { number: 2 }]
+jmpress.activate( steps, function( step ) {
+	return step.number === 1;
+});
+
+// [{ number: 1 }, { number: 2, active: true }]
+jmpress.activate(function( step ) {
+	return step.number === 2;
+});
+```
+
 ## Manual release process
 
 1. Remove `-pre` suffix on `package.json` and `bower.json` version

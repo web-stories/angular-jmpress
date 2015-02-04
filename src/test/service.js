@@ -4,7 +4,7 @@
 
 	test( "findActive()", function() {
 		expect( 1 );
-		var root = setup( "find-active", function( $scope, jmpress ) {
+		var root = setup( "fixture", function( $scope, jmpress ) {
 			$scope.steps = [{
 				number: 1,
 				active: true
@@ -14,6 +14,24 @@
 			$scope.execute = function() {
 				var activeStep = jmpress.findActive();
 				deepEqual( activeStep.number, 1, "Should find the correct active step" );
+			};
+		});
+		root.find( ".execute" ).trigger( "click" );
+	});
+
+	test( "activate( function( step ) )", function() {
+		expect( 1 );
+		var root = setup( "fixture", function( $scope, jmpress ) {
+			$scope.steps = [{
+				number: 1
+			}, {
+				number: 2
+			}];
+			$scope.execute = function() {
+				jmpress.activate(function( step ) {
+					return step.number === 2;
+				});
+				strictEqual( $scope.steps[ 1 ].active, true, "Should activate the second step" );
 			};
 		});
 		root.find( ".execute" ).trigger( "click" );
@@ -65,6 +83,18 @@
 	test( "getActive( steps, index ) - invalid range with active step", function() {
 		var steps = [{ active: true }];
 		strictEqual( this.jmpress.getActive( steps, -1 ), undefined, "Should return undefined" );
+	});
+
+	test( "activate( steps, function( step ) )", function() {
+		var steps = [{
+			number: 1
+		}, {
+			number: 2
+		}];
+		this.jmpress.activate( steps, function( step ) {
+			return step.number === 2;
+		});
+		strictEqual( steps[ 1 ].active, true, "Should activate the second step" );
 	});
 
 	function setup( id, controller ) {

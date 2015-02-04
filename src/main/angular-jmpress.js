@@ -25,11 +25,11 @@ function initialStep() {
 }
 
 function jmpress() {
-	var element, steps;
+	var element, instanceSteps;
 
 	this.init = function( initializedElement, scope ) {
 		element = initializedElement;
-		steps = scope.steps;
+		instanceSteps = scope.steps;
 	};
 
 	this.method = function() {
@@ -37,8 +37,26 @@ function jmpress() {
 		return element.jmpress.apply( element, args );
 	};
 
+	this.activate = function( steps, callback ) {
+		if ( !Array.isArray( steps ) ) {
+			callback = steps;
+			steps = instanceSteps;
+		}
+
+		steps.forEach(function( step ) {
+			delete step.active;
+		});
+
+		steps.some(function( step ) {
+			if ( callback( step ) === true ) {
+				step.active = true;
+				return true;
+			}
+		});
+	};
+
 	this.findActive = function( index ) {
-		return this.getActive( steps, index );
+		return this.getActive( instanceSteps, index );
 	};
 
 	this.getActive = function( steps, index ) {
