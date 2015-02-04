@@ -1,6 +1,6 @@
 (function() {
 
-	module( "Find" );
+	module( "Not passing steps" );
 
 	test( "findActive()", function() {
 		expect( 1 );
@@ -19,7 +19,7 @@
 		root.find( ".execute" ).trigger( "click" );
 	});
 
-	module( "Get", {
+	module( "Passing steps", {
 		setup: function() {
 			angular.module( "test", [ "jmpress" ] );
 			var injector = angular.injector( [ "ng", "test" ] );

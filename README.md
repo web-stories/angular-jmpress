@@ -98,13 +98,13 @@ If you want to see thing working, check out the [demo](https://github.com/web-st
 angular-jmpress has a service called `jmpress`, which contains some utility methods to
 retrieve the presentation information.
 
-By default, all utility methods start either with "find" or "get".
+Most utility methods come in two forms.
 
-* If a method starts with "get", then you have to provide the steps array in the first argument.
-* If a method starts with "find", then you can omit the first argument, angular-jmpress will
-  lookup for the steps array in the current service instance.
+* A form on which you have to provide the steps array as the first argument.
+* A form on which you can omit the first argument, then angular-jmpress will lookup for the
+  steps array in the current service instance.
 
-Example of "get" usage:
+Example with steps argument:
 
 ```javascript
 angular.module( "myModule", [ "jmpress" ] )
@@ -116,7 +116,7 @@ angular.module( "myModule", [ "jmpress" ] )
   });
 ```
 
-Example of "find" usage:
+Example without steps argument:
 
 ```javascript
 angular.module( "myModule", [ "jmpress" ] )
@@ -124,15 +124,16 @@ angular.module( "myModule", [ "jmpress" ] )
     $scope.steps = [{
       active: true
     }];
+    // Execute the method in a separate digest cycle when the steps array is omitted
     $scope.executedLater = function() {
       var active = jmpress.findActive();
     };
   });
 ```
 
-*Note that you should not call "find" methods in the same digest cycle used to create the steps
- array, because angular-jmpress does not yet have the internal reference for the steps. Use them
- only if you created the steps in a previous digest cycle.*
+*Note that you should not call methods without the steps argument in the same digest cycle used
+ to create the steps array, because angular-jmpress does not yet have the internal reference for
+ the steps. Use them only if you created the steps in a previous digest cycle.*
 
 ### getActive( steps ) / findActive()
 
