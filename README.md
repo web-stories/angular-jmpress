@@ -191,6 +191,26 @@ jmpress.activate(function( step ) {
 });
 ```
 
+## Initial step
+
+angular-jmpress was built to be able to load all steps asynchronously using angular. There are some specific rules for how angular-jmpress decides which one will be the initial step after the first digest cycle. The jmpress default plugin mechanism is ignored.
+
+1. If an active step is defined before loading the first steps, then angular-jmpress will use that as the initial step.
+2. If an active step is not defined before loading the first steps, then angular-jmpress will fire the callback registration (see below).
+
+### Callback registration
+
+Along with jmpress default callback registration, angular-jmpress provides one of its own through the jmpress service for some specific cases like this one. In this case, instead of returning the DOM element, it returns the step object that is going to start activated.
+
+The returned step object from the callback should be the same instance of the object that should start activated.
+
+```javascript
+jmpress.register( "selectInitialStep", function( firstSteps ) {
+	// Start with the last step activated
+	return firstSteps[ firstSteps.length - 1 ];
+});
+```
+
 ## Manual release process
 
 1. Remove `-pre` suffix on `package.json` and `bower.json` version

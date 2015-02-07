@@ -26,10 +26,32 @@ function initialStep() {
 
 function jmpress() {
 	var element, instanceSteps;
+	var methods = {
+		"selectInitialStep": []
+	};
 
 	this.init = function( initializedElement, scope ) {
 		element = initializedElement;
 		instanceSteps = scope.steps;
+	};
+
+	this.register = function( method, callback ) {
+		if ( !( method in methods ) ) {
+			throw new Error( "Method '" + method + "' doesn't exist!" );
+		}
+		methods[ method ].push( callback );
+	};
+
+	this.fire = function( method ) {
+		var callbackReturn;
+		var firingArguments = [].slice.call( arguments, 1 );
+		methods[ method ].some(function( callback ) {
+			callbackReturn = callback.apply( null, firingArguments );
+			if ( callbackReturn ) {
+				return true;
+			}
+		});
+		return callbackReturn;
 	};
 
 	this.method = function() {
@@ -149,15 +171,19 @@ function jmpressRoot( $compile, jmpress, initialStep ) {
 				}
 
 				// SELECTING THE INITIAL STEP
-				// The initial step does not work when we add steps dynamically with
-				// angular.
-				// For now replicate some of the behavior here.
-				var settings, firstStep;
-				if ( jmpress.getActiveReference( steps ) === undefined ) {
-					settings = jmpress.method( "settings" );
+				// The jmpress mechanism for the initial step does not work when we add steps
+				// dynamically with angular.
+				var firstStep;
+				var activeReference = jmpress.getActiveReference( steps );
+				var settings = jmpress.method( "settings" );
+				if ( !activeReference ) {
 					firstStep =
 						initialStep.fromHash( settings ) ||
+						jmpress.fire( "selectInitialStep", steps ) ||
 						initialStep.fromStart( element, settings );
+					if ( !firstStep.nodeType ) {
+						firstStep = element.find( ".step" ).eq( steps.indexOf( firstStep ) );
+					}
 					jmpress.method( "goTo", firstStep );
 				}
 			});

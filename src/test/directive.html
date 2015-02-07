@@ -94,6 +94,15 @@
           </div>
         </div>
       </div>
+      <div id="initial-step" data-ng-controller="Controller">
+        <div data-jmpress-root
+             data-jmpress-steps="steps">
+          <div class="step" data-ng-repeat="step in steps" data-jmpress-step>
+            Step {{ step.number }}
+          </div>
+        </div>
+        <button class="initial-step-assertion" data-ng-click="assert()"></button>
+      </div>
     </div>
   </body>
 </html>

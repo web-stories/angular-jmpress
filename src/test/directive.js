@@ -113,6 +113,7 @@
 	});
 
 	test( "Watch changes in the steps array instance", function() {
+		expect( 1 );
 		var root = setup( "watch-changes-array", function( $scope ) {
 			$scope.steps = [];
 			$scope.addStep = function() {
@@ -127,6 +128,7 @@
 	});
 
 	test( "Activate the initial step from hashbang", function() {
+		expect( 1 );
 		window.location.hash = "#step-number-2";
 		var root = setup( "initial-step-hash", function( $scope ) {
 			$scope.steps = [{
@@ -146,6 +148,7 @@
 	});
 
 	test( "Steps as children of a parent object", function() {
+		expect( 1 );
 		var root = setup( "steps-as-children", function( $scope ) {
 			$scope.presentation = {
 				slides: [{
@@ -184,6 +187,22 @@
 		// 2. setInactive for the first step
 		// 3. setActive for the second step
 		strictEqual( watchTriggers, 3, "Should execute the watched steps" );
+	});
+
+	test( "Define a custom initial step through a custom callback registration", function() {
+		expect( 1 );
+		var root = setup( "initial-step", function( $scope, jmpress ) {
+			$scope.steps = [{
+				number: 1
+			}, {
+				number: 2
+			}];
+			jmpress.register( "selectInitialStep", function( firstSteps ) {
+				return firstSteps[ firstSteps.length - 1 ];
+			});
+		});
+		var lastStep = root.find( ".step" ).last();
+		ok( lastStep.hasClass( "active" ), "Should start with the last step activated" );
 	});
 
 	function setup( id, controller ) {
