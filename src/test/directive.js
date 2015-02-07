@@ -61,7 +61,7 @@
 		strictEqual( step.attr( "data-x" ), "100", "Should add the data attribute" );
 	});
 
-	test( "Loading steps asynchrounously", function() {
+	test( "Loading steps asynchronously", function() {
 		expect( 3 );
 		var root = setup( "steps-async", function( $scope, $timeout ) {
 			$timeout(function() {
@@ -145,6 +145,25 @@
 			ok( $( "#step-number-2" ).hasClass( "active" ), "Should start in the second step" );
 			window.location.hash = "#";
 		}, 0 );
+	});
+
+	test( "Activate the initial step from hashbang when there's more than 2 items", function() {
+		expect( 1 );
+		window.location.hash = "#step-number-2";
+		var root = setup( "initial-step-hash", function( $scope ) {
+			$scope.steps = [{
+				id: "step-number-1",
+				number: 1
+			}, {
+				id: "step-number-2",
+				number: 2
+			}, {
+				id: "step-number-3",
+				number: 3
+			}];
+		});
+		ok( $( "#step-number-2" ).hasClass( "active" ), "Should start in the second step" );
+		window.location.hash = "#";
 	});
 
 	test( "Steps as children of a parent object", function() {

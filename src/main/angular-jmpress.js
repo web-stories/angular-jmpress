@@ -13,13 +13,13 @@ function initialStep() {
 		}
 	};
 	this.fromStart = function( rootElement, settings ) {
-		return rootElement.find( settings.stepSelector );
+		return rootElement.find( settings.stepSelector )[ 0 ];
 	};
 	function getElementFromUrl( settings ) {
 		var element = $( "#" + window.location.hash.replace( /^#\/?/, "" ) );
 		var stepSelector = settings.stepSelector;
 		if ( element.length > 0 && element.is( stepSelector ) ) {
-			return element;
+			return element[ 0 ];
 		}
 	}
 }
@@ -181,10 +181,12 @@ function jmpressRoot( $compile, jmpress, initialStep ) {
 						initialStep.fromHash( settings ) ||
 						jmpress.fire( "selectInitialStep", steps ) ||
 						initialStep.fromStart( element, settings );
-					if ( !firstStep.nodeType ) {
+					if ( $.isPlainObject( firstStep ) ) {
 						firstStep = element.find( ".step" ).eq( steps.indexOf( firstStep ) );
 					}
-					jmpress.method( "goTo", firstStep );
+					// TODO review the contract for the "goTo" method, changing for plain
+					// element seems to change the "setActive" callbacks first argument.
+					jmpress.method( "goTo", $( firstStep ) );
 				}
 			});
 		}
