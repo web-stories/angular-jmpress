@@ -98,13 +98,7 @@ If you want to see thing working, check out the [demo](https://github.com/web-st
 angular-jmpress has a service called `jmpress`, which contains some utility methods to
 retrieve the presentation information.
 
-Most utility methods come in two forms.
-
-* A form on which you have to provide the steps array as the first argument.
-* A form on which you can omit the first argument, then angular-jmpress will lookup for the
-  steps array in the current service instance.
-
-Example with steps argument:
+Example:
 
 ```javascript
 angular.module( "myModule", [ "jmpress" ] )
@@ -116,35 +110,15 @@ angular.module( "myModule", [ "jmpress" ] )
   });
 ```
 
-Example without steps argument:
-
-```javascript
-angular.module( "myModule", [ "jmpress" ] )
-  .controller(function( $scope, jmpress ) {
-    $scope.steps = [{
-      active: true
-    }];
-    // Execute the method in a separate digest cycle when the steps array is omitted
-    $scope.executedLater = function() {
-      var active = jmpress.findActive();
-    };
-  });
-```
-
-*Note that you should not call methods without the steps argument in the same digest cycle used
- to create the steps array, because angular-jmpress does not yet have the internal reference for
- the steps. Use them only if you created the steps in a previous digest cycle.*
-
-### getActive( steps ) / findActive()
+### getActive( steps )
 
 Retrieves the current active step or `undefined` if there's no active step.
 
 ```javascript
 jmpress.getActive( steps ); // { active: true }
-jmpress.findActive(); // { active: true }
 ```
 
-### getActive( steps, index ) / findActive( index )
+### getActive( steps, index )
 
 Retrieves the step relative to the current active step, or `undefined` if there's no active step or
 if the step is out of range.
@@ -160,10 +134,10 @@ var steps = [{
 }];
 
 jmpress.getActive( steps, 1 ); // { number: 3 }
-jmpress.findActive( -1 ); // { number: 1 }
+jmpress.getActive( steps, -1 ); // { number: 1 }
 ```
 
-### activate( steps, callback( step ) ) / activate( callback( step ) )
+### activate( steps, callback( step ) )
 
 Changes the current activated step according to the condition of a given callback.
 
@@ -183,11 +157,6 @@ var steps = [{
 // [{ number: 1, active: true }, { number: 2 }]
 jmpress.activate( steps, function( step ) {
 	return step.number === 1;
-});
-
-// [{ number: 1 }, { number: 2, active: true }]
-jmpress.activate(function( step ) {
-	return step.number === 2;
 });
 ```
 
