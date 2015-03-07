@@ -1,6 +1,6 @@
 {
   "name": "angular-jmpress",
-  "version": "0.0.2-pre",
+  "version": "0.0.3",
   "devDependencies": {
     "sinon": "http://sinonjs.org/releases/sinon-1.12.2.js",
     "requirejs": "2.1.x",
