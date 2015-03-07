@@ -224,6 +224,21 @@
 		ok( lastStep.hasClass( "active" ), "Should start with the last step activated" );
 	});
 
+	test( "hashbang with a leading dot should not throw an exception", function() {
+		expect( 1 );
+
+		// https://github.com/jquery/sizzle/issues/320
+		window.location.hash = "#.";
+
+		setup( "dot-in-hash", function( $scope ) {
+			$scope.steps = [];
+		});
+
+		strictEqual( console.error.called, false, "Should not call console.error" );
+
+		window.location.hash = "#";
+	});
+
 	function setup( id, controller ) {
 		var target = $( "#" + id );
 		angular.module( "test", [ "jmpress" ] )
